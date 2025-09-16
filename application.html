@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="styles/index/index1.css">
+</head>
+<body>
+<script type="text/javascript">
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+
+  const usr = getCookie("username");
+  
+  if (!usr) {
+    alert("Sign-up first");
+    window.location.href = 'sign-up.html';
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const fname = getCookie("fname");
+    const lname = getCookie("lname");
+    const am = getCookie("am");
+
+    if(fname) document.getElementById("fname").value = fname;
+    if(lname) document.getElementsByName("lname")[0].value = lname;
+    if(am) document.getElementsByName("am")[0].value = am;
+  });
+
+  const startDate = new Date(getCookie("startDate"));
+  const endDate   = new Date(getCookie("endDate"));
+  const today     = new Date();
+
+  document.addEventListener("DOMContentLoaded", function() {
+    const form = document.forms["application_form"];
+
+    if (!startDate || !endDate || isNaN(startDate) || isNaN(endDate)) {
+      alert("No application period has been set by the administrator.");
+      window.location.href = 'index.html';
+    } 
+    else if (today < startDate) {
+      alert(
+      "The application period has not started yet.\n" +
+      `The application period is from ${startDate.toISOString().split('T')[0]} to ${endDate.toISOString().split('T')[0]}.`
+      );
+      window.location.href = 'index.html';
+    } 
+    else if (today > endDate) {
+      alert("The application period has ended.\n" +
+      `The application period was from ${startDate.toISOString().split('T')[0]} to ${endDate.toISOString().split('T')[0]}.`
+      );
+      window.location.href = 'index.html';
+    }
+  });
+</script> 
+<div class="row">
+  <div class="col-s-12 col-m-3 col-l-3 menu">
+    <ul id="menu"></ul>
+  </div>	 
+  <div class="col-s-12 col-m-9 col-l-9" align="center"> 
+  <u><h1>Application form: </h1></u> <br><br>
+    <form method="POST" action="application.php" enctype="multipart/form-data"> 
+      Name: <br>
+      <input type="text" id="fname" name="fname" readonly> <br>
+      Epitheto: <br> 
+      <input type="text" name="lname" readonly> <br>
+      Arithmos Mitroou: <br>
+      <input type="number" name="am" readonly> <br><br>
+      <label for="percent">
+        Percentage of "passed" courses up to and including the previous year:
+      </label> <br>
+      0%<input type="range" id="percent" name="percent" min="0" max="100" step="1" oninput="this.nextElementSibling.value = this.value + '%'" required>
+      <output>0%</output> <br>
+      Average of "passed" courses up to the previous year of study: <br>
+      <input type="number" name="avg" min="5" max="10" step="0.1" required> <br>
+      Certificate of knowledge of English language: <br>
+      <input type="radio" name="english_cert" value="A1" required>A1
+      <input type="radio" name="english_cert" value="A2">A2
+      <input type="radio" name="english_cert" value="B1">B1
+      <input type="radio" name="english_cert" value="B2">B2
+      <input type="radio" name="english_cert" value="C1">C1
+      <input type="radio" name="english_cert" value="C2">C2 <br>
+      Knowledge of additional foreign languages: <br>
+      <input type="radio" name="foreign_language" value="Yes">Yes
+      <input type="radio" name="foreign_language" value="No">No <br>
+      University - 1st option (University of Peloponnese):<br>
+      <select name="University of Peloponnese" id="uni1"></select> <br> <!--required-->
+      University - 2nd option (University of Piraeus): <br>
+      <select name="University of Piraeus" id="uni2"></select> <br>
+      University - 3rd option (Universities Abroad): <br>
+      <select name="University Abroad" id="uni3"></select> <br><br>
+      Detailed degree: 
+      <input type="file" name="degree_file" required> <br><br>
+      English Language Degree: 
+      <input type="file" name="english_file" required> <br><br>
+      Degrees in other foreign languages: 
+      <input type="file" name="other_files"> <br><br>  <!--multiple-->
+      <!-- <input type="submit" value="Upload Files"> <br><br> -->
+      Acceptance of terms<input name="Acceptance of the terms" type="checkbox" value="checkbox" required> <br><br>
+      <input type="submit" value="Submit"> <br>
+    </form> </br>
+  </div>
+</div>
+
+<script>
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+
+  const menu = document.getElementById("menu");
+
+  const username = getCookie("username");
+  
+  let html = `
+    <li><a href="index.html">INDEX</a></li>
+    <li><a href="more.html">MORE</a></li>
+    <li><a href="reqs.html">REQS</a></li>
+    <li><a href="application.html">APPLICATION</a></li>
+  `;
+
+  if (username) {
+    html += `
+      <li class="profile"><a href="changes.php">👤 ${username}</a></li>
+    `;
+  } 
+  else {
+    html += `
+      <li><a href="sign-up.php">SIGN-UP</a></li>
+      <li><a href="login.php">LOGIN</a></li>
+    `;
+  }
+
+  menu.innerHTML = html;
+
+function loadUniversities(universityId, selectId, addDefault = false) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "unis.php?university_id=" + universityId, true);
+    xhr.onload = function() {
+        if (this.status === 200) {
+            const data = JSON.parse(this.responseText);
+            const select = document.getElementById(selectId);
+            select.innerHTML = ""; 
+          
+            if (addDefault) {
+                const defaultOption = document.createElement("option");
+                defaultOption.value = "";
+                defaultOption.text = "";
+                select.appendChild(defaultOption);
+            }
+
+            data.forEach(item => {
+                const option = document.createElement("option");
+                option.value = `${item.university_name} (${item.city})`;
+                option.text = `${item.university_name} (${item.city})`;
+                select.appendChild(option);
+            });
+        }
+    };
+    xhr.send();
+}
+
+loadUniversities(1, "uni1");              
+loadUniversities(2, "uni2", true);        
+loadUniversities(3, "uni3", true);        
+
+</script>
+
+</body>
+</html>

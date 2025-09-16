@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="styles/index/index1.css">
+</head>
+<body>
+  <div class="header">
+    <div class="col-s-12 col-m-12 col-l-12"> 
+      <img src="media/index/imag1.jpg"> 
+      <img src="media/reqs/imag3.jpg"> <br> 
+    </div> 
+  </div>
+  <div class="row">
+    <div class="col-s-12 col-m-12 col-l-12">
+      <u> <h3>MINIMUM REQUIREMENTS</h3> </u>
+      <p>The minimum requirements are set out in the table below:</p> 
+      <table bgcolor="grey" border="1">
+        <caption>MINIMUM REQUIREMENTS</caption>
+        <tr bgcolor="yellow"><th>Current Seed Year</th><th>Percentage of "passed" courses up to the previous year of study</th><th>Average of "past" courses up to the previous year of study</th><th>Certificate of knowledge of English language</th></tr> 
+        <tr bgcolor="lightyellow" align="center"><td>>=2nd year</td><td>>=70%</td><td>>=6.50</td><td>B2 level or higher</td></tr>
+      </table> <br>
+      The <a href="media/reqs/p2.pdf">English</a> and <a href="media/reqs/p1.pdf">Greek</a> publication of the 2023 Erasmus+ Programme Guide <BR> <BR>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-s-12 col-m-3 col-l-3 menu">
+      <ul id="menu"></ul>
+    </div>	
+    <div class="col-s-12 col-m-9 col-l-9" align="center">  
+      <form id="myForm" onsubmit="check()"> 
+        Current year of study:
+        <select id="study" name="study"> </option>
+          <option value="1st year">1st year </option>
+          <option selected value="2nd year">2nd year </option>
+          <option value="3rd year">3rd year </option>
+          <option value="4th year">4th year </option>
+          <option value="greater">greater </option>
+        </select>
+        <br><br>
+        Average of "past" courses up to and including the previous year of study :
+        <input type="number" id="average" name="average" min="5" max="10" step="0.1" required><br><br>
+        <label for="percent">
+        Percentage of "passed" courses up to and including the previous year:
+        </label> 
+        0%<input type="range" id="percent" name="percent" min="0" max="100" step="1" oninput="this.nextElementSibling.value = this.value + '%'" required>
+        <output>0%</output> <br><br>
+        Certificate of knowledge of English language:
+        <input type="radio" id="A1" name="english_cert" value="A1" required>A1 
+        <input type="radio" id="A2" name="english_cert" value="A2">A2
+        <input type="radio" id="B1" name="english_cert" value="B1">B1
+        <input type="radio" id="B2" name="english_cert" value="B2">B2
+        <input type="radio" id="C1" name="english_cert" value="C1">C1
+        <input type="radio" id="C2" name="english_cert" value="C2">C2 <br><br>
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  </div>
+
+<script>
+  function check() {
+
+    var year = document.getElementById("study").value; 
+    var percent = document.getElementById("percent").value;  
+    var average = document.getElementById("average").value;
+
+    var B2 = document.getElementById("B2").checked;
+    var C1 = document.getElementById("C1").checked;
+    var C2 = document.getElementById("C2").checked;
+    
+    if( ( (year ==="2nd year") || (year ==="3rd year") || (year ==="4th year") || (year ==="greater") ) && (percent >= 70) && (average >=6.50) && ( (B2 == true) || (C1 == true) || (C2 == true) ) ) {
+      alert("Meet the conditions");
+    }
+    else {
+      alert("You do not meet the conditions");  
+    }	
+  }
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+
+  const menu = document.getElementById("menu");
+
+  const username = getCookie("username");
+  
+  let html = `
+    <li><a href="index.html">INDEX</a></li>
+    <li><a href="more.html">MORE</a></li>
+    <li><a href="reqs.html">REQS</a></li>
+    <li><a href="application.html">APPLICATION</a></li>
+  `;
+
+  if (username) {
+    html += `
+      <li class="profile"><a href="changes.php">👤 ${username}</a></li>
+    `;
+  } 
+  else {
+    html += `
+      <li><a href="sign-up.html">SIGN-UP</a></li>
+      <li><a href="login.html">LOGIN</a></li>
+    `;
+  }
+
+  const endDate   = new Date(getCookie("endDate"));
+  const today     = new Date();
+  if(today > endDate) {
+    html += `
+      <li ><a href="results.html">Results</a></li>
+    `;
+  }
+
+  menu.innerHTML = html;
+</script>
+
+</body>
+</html>

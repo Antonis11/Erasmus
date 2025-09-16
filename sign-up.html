@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="styles/index/index1.css">
+</head>
+<body>
+<div class="row">
+	<div class="col-s-12 col-m-3 col-l-3 menu">
+		<ul id="menu"></ul>
+	</div>	 
+	<div class="col-s-12 col-m-9 col-l-9" align="center"> 
+	<form method="POST" action="sign-up.php">
+		<u><h1>Registration form: </h1></u> <br><br>
+			Name: <br>
+			<input type="text" name="fname"> <br>
+			Epitheto: <br> 
+			<input type="text" name="lname"> <br>
+			Arithmos Mitroou: <br>
+			<input type="number" name="am"> <br> 
+			Phone Number: <br>
+			<input type="number" name="phone"> <br> 
+			E-mail: <br>
+			<input pattern="[a-z0-9._%+-]+@[a-z0-9._]+\.[a-z]{2-63}$" type="email" name="email"> <br> 
+			Username: <br>
+			<input type="text" name="username"> <br>
+			Password: <br> 
+			<input type="password" name="password"> <br>
+			Confirm-Password: <br>
+			<input type="password" name="confirm-password"> <br> <br>
+			<input type="submit" value="Submit"> <br>
+	</form>
+	</div>
+</div>  
+
+<script>
+	function getCookie(name) {
+		const value = `; ${document.cookie}`;
+		const parts = value.split(`; ${name}=`);
+		if (parts.length === 2) return parts.pop().split(';').shift();
+	}
+
+	const menu = document.getElementById("menu");
+
+	const username = getCookie("username");
+	
+	let html = `
+		<li><a href="index.html">INDEX</a></li>
+		<li><a href="more.html">MORE</a></li>
+		<li><a href="reqs.html">REQS</a></li>
+		<li><a href="application.html">APPLICATION</a></li>
+	`;
+
+	if (username) {
+    html += `
+		<li class="profile"><a href="changes.php">👤 ${username}</a></li>
+		
+    `;
+	} 
+	else {
+    html += `
+		<li><a href="sign-up.html">SIGN-UP</a></li>
+		<li><a href="login.html">LOGIN</a></li>
+    `;
+	}
+
+	const endDate   = new Date(getCookie("endDate"));
+	const today     = new Date();
+	if(today > endDate) {
+		html += `
+			<li ><a href="results.html">Results</a></li>
+		`;
+	}
+
+	menu.innerHTML = html;
+</script>
+
+</body>
+</html>
