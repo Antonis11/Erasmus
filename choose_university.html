@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles/index/index1.css">
+</head>
+<body>
+<div class="row" align="center">
+    <u><h1>Choose University: </h1></u> <br><br>
+    <form method="POST" action="choose_university.php" enctype="multipart/form-data"> 
+        <select name="Choose_University" id="all_uni"></select> <br><br> 
+        <input type="submit" value="Search"> <br>
+    </form> </br>
+</div>
+
+<script>
+function loadUniversities(universityId, selectId, addDefault = false) {
+    const url = universityId > 0 
+        ? "unis.php?university_id=" + universityId 
+        : "unis.php";
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.onload = function() {
+        if (this.status === 200) {
+            const data = JSON.parse(this.responseText);
+            const select = document.getElementById(selectId);
+            select.innerHTML = ""; 
+
+            if (addDefault) {
+                const defaultOption = document.createElement("option");
+                defaultOption.value = "";
+                defaultOption.text = "";
+                select.appendChild(defaultOption);
+            }
+
+            data.forEach(item => {
+                const option = document.createElement("option");
+                option.value = `${item.university_name} (${item.city})`;
+                option.text = `${item.university_name} (${item.city})`;
+                select.appendChild(option);
+            });
+        }
+    };
+    xhr.send();
+}
+
+loadUniversities(0, "all_uni");              
+</script>
+
+</body>
+</html>
