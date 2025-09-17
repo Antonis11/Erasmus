@@ -43,5 +43,5 @@ To run the application locally, follow these steps:
 ## Live Demo
 
 The Αpplication is also available online at:  
-👉 [https://tony-erasmous.free.nf/](https://tony-erasmus.free.nf/)
+👉 [https://tony-erasmus.free.nf/](https://tony-erasmus.free.nf/)
 
