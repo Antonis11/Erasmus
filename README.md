@@ -39,3 +39,9 @@ To run the application locally, follow these steps:
 4. Start the **Apache** and **MySQL** modules.
 5. Go to [http://localhost/phpmyadmin](http://localhost/phpmyadmin) and **import the provided Database files**.
 6. Open [http://localhost/index.html](http://localhost/index.html) in your browser to run the application.
+
+## Live Demo
+
+The Αpplication is also available online at:  
+👉 [https://tony-erasmous.free.nf/](https://tony-erasmus.free.nf/)
+
